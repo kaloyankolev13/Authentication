@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/kaloyankolev13/Authentication#readme",
   "dependencies": {
-    "bcrypt": "^5.1.0"
+    "bcrypt": "^5.1.0",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "mongoose": "^6.7.0"
   }
 }

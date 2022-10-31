@@ -1,14 +1,12 @@
 const bcrypt = require('bcrypt');
 
 const hashPassword = async (password) => {
-  const salt = await bcrypt.genSalt(12);
-  const hash = await bcrypt.hash(password, salt);
-  console.log(salt);
+  const hash = await bcrypt.hash(password, 12);
   console.log(hash);
   return hash;
 };
 
-// console.log(ashPassword('monkey'));
+console.log(hashPassword('monkey'));
 
 const login = async (password, hashedPassword) => {
   const result = await bcrypt.compare(password, hashedPassword);
@@ -21,4 +19,4 @@ const login = async (password, hashedPassword) => {
 
 hashPassword('monkey');
 
-login('monkey', '$2b$12$FIFgeC/NVn8efP8L/7JLCe4P0vPx5fFgi0nlU46iSFHnQ3w1Zd9bO');
+// login('monkey', '$2b$12$FIFgeC/NVn8efP8L/7JLCe4P0vPx5fFgi0nlU46iSFHnQ3w1Zd9bO');
