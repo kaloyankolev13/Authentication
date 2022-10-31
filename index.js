@@ -1,22 +1,18 @@
-const bcrypt = require('bcrypt');
+const express = require('express');
+const app = express();
+const User = require('./models/user');
 
-const hashPassword = async (password) => {
-  const hash = await bcrypt.hash(password, 12);
-  console.log(hash);
-  return hash;
-};
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-console.log(hashPassword('monkey'));
+app.get('/register', (req, res) => {
+  res.render('register');
+});
 
-const login = async (password, hashedPassword) => {
-  const result = await bcrypt.compare(password, hashedPassword);
-  if (result) {
-    console.log('Logged in!');
-  } else {
-    console.log('Incorrect password');
-  }
-};
+app.get('/secret', (req, res) => {
+  res.send('This is a secret');
+});
 
-hashPassword('monkey');
-
-// login('monkey', '$2b$12$FIFgeC/NVn8efP8L/7JLCe4P0vPx5fFgi0nlU46iSFHnQ3w1Zd9bO');
+app.listen(3000, () => {
+  console.log('Server started');
+});
