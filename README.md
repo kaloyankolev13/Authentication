@@ -32,3 +32,8 @@ That is why we use hashing functions
 3.Deterministic- same input yields same output
 4.Unlikely to find 2 outputs with same value
 5.Password Hash Functions are deliberately SLOW
+
+**Password Salts**
+
+A salt is a random value added to the password before we hash it.
+It helps ensure unique hashes and mitigate common attacks
