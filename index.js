@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
   res.send('This is the home page!');
 });
 
-app.get('/register', async (req, res) => {
+app.get('/register', (req, res) => {
   res.render('register');
 });
 
@@ -37,6 +37,24 @@ app.post('/register', async (req, res) => {
   const user = new User({ username, password: hash });
   await user.save();
   res.redirect('/');
+});
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+app.post('/login', async (req, res) => {
+  // console.log(req.body);
+
+  const { username, password } = req.body;
+  const foundUser = await User.findOne({ username });
+  const validPassword = await bcrypt.compare(password, foundUser.password);
+
+  if (validPassword) {
+    res.send('Welcome back!');
+  } else {
+    res.send('Invalid password!');
+  }
 });
 
 app.get('/secret', async (req, res) => {
