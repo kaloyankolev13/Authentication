@@ -3,6 +3,7 @@ const { default: mongoose } = require('mongoose');
 const app = express();
 const User = require('./models/user');
 const bcrypt = require('bcrypt');
+const session = require('express-session');
 
 mongoose
   .connect('mongodb://localhost:27017/authDemo', {
@@ -21,6 +22,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(express.urlencoded({ extended: true }));
+app.use(session({ secret: 'notagoodsecret' }));
 
 app.get('/', (req, res) => {
   res.send('This is the home page!');
@@ -36,6 +38,7 @@ app.post('/register', async (req, res) => {
   //   console.log(hash);
   const user = new User({ username, password: hash });
   await user.save();
+  req.session.user_id = foundUser._id;
   res.redirect('/');
 });
 
@@ -44,20 +47,24 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
 
   const { username, password } = req.body;
   const foundUser = await User.findOne({ username });
   const validPassword = await bcrypt.compare(password, foundUser.password);
 
   if (validPassword) {
-    res.send('Welcome back!');
+    req.session.user_id = foundUser._id;
+    res.redirect('/secret');
   } else {
-    res.send('Invalid password!');
+    res.redirect('/login');
   }
 });
 
 app.get('/secret', async (req, res) => {
+  if (!req.session.user_id) {
+    res.redirect('/login');
+  }
   res.send('This is a secret');
 });
 
