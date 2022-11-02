@@ -61,11 +61,17 @@ app.post('/login', async (req, res) => {
   }
 });
 
+app.post('/logout', (req, res) => {
+  // req.session.user_id = null;
+  req.session.destroy();
+  res.redirect('/login');
+});
+
 app.get('/secret', async (req, res) => {
   if (!req.session.user_id) {
     res.redirect('/login');
   }
-  res.send('This is a secret');
+  res.render('secret');
 });
 
 app.listen(3000, () => {
