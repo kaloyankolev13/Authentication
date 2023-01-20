@@ -22,7 +22,16 @@ app.set('views', 'views');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(
-  session({ secret: 'notagoodsecret', resave: false, saveUninitialized: true })
+  session({
+    secret: 'notagoodsecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      expires: Date.now() + 1000 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  })
 );
 
 const requireLogin = (req, res, next) => {
